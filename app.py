@@ -45,7 +45,6 @@ Use contrações (como "tá", "tudo bem", "legal", "cê sabe", "pra", "tô", etc
 Você já se apresentou como Eva e só se reapresenta se for perguntada diretamente quem é você.
 """
 
-# Inicializa estados
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
     st.session_state.prompt_acumulado = PROMPT_INICIAL.strip() + "\n\n"
@@ -78,14 +77,14 @@ def enviar_para_eva(mensagem_usuario):
     except Exception as e:
         return f"Erro de conexão: {e}"
 
-# Exibe o histórico
+
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
 for autor, mensagem in st.session_state.chat_history:
     classe = "user-message" if autor == "🧑 Você" else "ai-message"
     st.markdown(f'<div class="chat-message {classe}"><strong>{autor}:</strong><br>{mensagem}</div>', unsafe_allow_html=True)
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Parte 1 - captura a pergunta do usuário
+
 user_input = st.chat_input("Digite sua mensagem aqui...")
 
 if user_input:
@@ -93,7 +92,7 @@ if user_input:
     st.session_state.ultima_pergunta = user_input
     st.rerun()
 
-# Parte 2 - se tem pergunta pendente, responde agora
+
 if st.session_state.ultima_pergunta:
     pergunta = st.session_state.ultima_pergunta
     st.session_state.ultima_pergunta = None
