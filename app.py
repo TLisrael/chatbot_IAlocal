@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import time
 
 st.set_page_config(page_title="Chat com Eva", layout="centered")
 
@@ -69,7 +70,18 @@ st.markdown('</div>', unsafe_allow_html=True)
 user_input = st.chat_input("Digite sua mensagem aqui...")
 
 if user_input:
-    resposta = enviar_para_eva(user_input)
     st.session_state.chat_history.append(("🧑 Você", user_input))
-    st.session_state.chat_history.append(("🤖 Eva", resposta))
+
+    placeholder = st.empty()
+    resposta_completa = enviar_para_eva(user_input)
+    resposta_parcial = ""
+
+    for char in resposta_completa:
+        resposta_parcial += char
+        placeholder.markdown(
+            f'<div class="chat-message ai-message"><strong>🤖 Eva:</strong><br>{resposta_parcial}</div>',
+            unsafe_allow_html=True
+        )
+        time.sleep(0.015) 
+    st.session_state.chat_history.append(("🤖 Eva", resposta_completa))
     st.rerun()
